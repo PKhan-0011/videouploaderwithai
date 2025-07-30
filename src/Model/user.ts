@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 export interface Iuser extends Document {
        userName: string,
-       passWord: string,
+       password: string,
        email: string,
        conFirmPassword: string,
        createdAt?: Date,
@@ -14,7 +14,7 @@ export interface Iuser extends Document {
 
 const userSchema = new Schema({
     userName: {type: String, required: true},
-    passWord: {type: String, required: true},
+    password: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     confirmPassword: {type: String, required: true},
     createdAt: {type: Date, required: true},
@@ -25,7 +25,7 @@ const userSchema = new Schema({
 
 userSchema.pre("save", async function (next){
      if(this.isModified("passWord")){
-        this.passWord = await  bcrypt.hash(this.passWord, 10);
+        this.password = await  bcrypt.hash(this.password, 10);
      }
      next();
 });
