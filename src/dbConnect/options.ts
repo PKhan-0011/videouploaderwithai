@@ -96,3 +96,5 @@ export const authOptions: NextAuthOptions = {
 
 // authoptions ka jo call back hoga usme hamm generally providers dalegne 
 // callbacks dalenge secret, pages, and ek optional session okkh..;   
+
+

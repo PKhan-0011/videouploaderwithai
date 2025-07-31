@@ -4,7 +4,7 @@ declare module "next-auth" {
  
   interface Session {
     user: {
-      address: string  // yha p tera like address jo hai tera wo id bhi bna k use kiya hua hai hiresh sie n okkh!..
+      address: string  // yha p tera like address jo hai tera wo id bhi bna k use kiya hua hai hitesh sie n okkh!..
 
     } & DefaultSession["users"],
   }
