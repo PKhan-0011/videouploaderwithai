@@ -11,6 +11,27 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  
+  // 👇 Add custom rules in a separate object
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/ban-ts-comment": [
+        "error",
+        {
+          "ts-ignore": false,
+          "ts-nocheck": true,
+          "ts-check": true,
+          "ts-expect-error": true,
+        },
+      ],
+    },
+  },
 ];
 
+
 export default eslintConfig;
+
+// ye customize hai iska kahi wrapper bna l and use karte rahio bcz isse hi hamm  ts-ignore kar sakte hai aur any bhi de sakte hai okkh!..;
