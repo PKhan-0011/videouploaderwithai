@@ -44,6 +44,8 @@ export const authOptions: NextAuthOptions = {
                      if(!isValid){
                         throw new Error("Invalid password");
                      }
+                     
+                     // yha s dataBase m password and email dono aa rhe hai okkh!.. then hamm tabhi id aur email send kar rahe hai!...;
 
                      return {
                         id: user._id as string,
@@ -55,7 +57,8 @@ export const authOptions: NextAuthOptions = {
                     throw new Error("Error hai yha p ", err);
                 }
             }
-          })
+          }),
+          // yha hamm de sakte hai apna google and github etc etc.. credentails..
     ],
 
     callbacks:{
@@ -95,6 +98,11 @@ export const authOptions: NextAuthOptions = {
 
 
 // authoptions ka jo call back hoga usme hamm generally providers dalegne 
-// callbacks dalenge secret, pages, and ek optional session okkh..;   
+// callbacks dalenge secret, pages, and ek optional session okkh..;  
+
+
+// dekh auth ata hai providers, callbacks and pages and session and secret etc etc..
+
+// and providers k andar hi credentails provider ayega  ad abb iske andar fir chize todhi  like google and etc etc providers...
 
 

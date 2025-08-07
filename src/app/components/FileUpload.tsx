@@ -7,9 +7,8 @@ import {
     ImageKitUploadNetworkError,
     upload,
 } from "@imagekit/next";
-import { Span } from "next/dist/trace";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 
 interface FileUploadProps {
@@ -26,6 +25,8 @@ const FileUpload = ({
    
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState<string | null>('');
+
+    console.log(error);
 
     
         // ye optional hai but khud s ki gayi validation hai okkh!..;
@@ -64,7 +65,7 @@ const FileUpload = ({
                 token: data.token,
                 signature: data.signature,
                 publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY!,
-                file: data.file,
+                file, // bcz ye file upar s aya hai okkh!... backend s nahi.. clear
                 fileName: file.name, 
                 
                 // Optionally set a custom file name
@@ -83,7 +84,18 @@ const FileUpload = ({
         }
 
         catch(error){
-           console.log("Upload failed", error);
+           if (error instanceof ImageKitAbortError) {
+                console.error("Upload aborted:", error.reason);
+            } else if (error instanceof ImageKitInvalidRequestError) {
+                console.error("Invalid request:", error.message);
+            } else if (error instanceof ImageKitUploadNetworkError) {
+                console.error("Network error:", error.message);
+            } else if (error instanceof ImageKitServerError) {
+                console.error("Server error:", error.message);
+            } else {
+                // Handle any other errors that may occur.
+                console.error("Upload error:", error);
+            }
 
         }finally{
             setUploading(false); // iski isliye need thi bcz hamne isko try and catch m false nhai mark kiya after calling..;
@@ -91,7 +103,6 @@ const FileUpload = ({
 
      };
     
-
     return (
         <>
            
@@ -105,3 +116,12 @@ const FileUpload = ({
 };
 
 export default FileUpload;
+
+// step's to define how to code such kind of code bases!...
+
+// Note** firstStep: define state's, define fileValdations, hanldeChange define, uske andar hi checking hogi like ki
+// ki file hai bhi thik ya nahi and fileValidation bhi in case glt hua to show error.. and then api call hogi backend p
+// wha s data lenge hamm sara ka sara and usko json m convert karenge bcz fetch hame strings m deti hai chize okkh..
+// uske badd sara data hamm uplaod method wale m daal denge okkh!...and wha shamm onProcess and sucess bhi fill kar denge..
+
+

@@ -41,3 +41,5 @@ const videoModel = (mongoose.models.videos as mongoose.Model<Video>) || (mongoos
 export default videoModel;
 
 
+// default: Video_Dimension.height},
+// width: {type: Number, default: Video_Dimension.width
