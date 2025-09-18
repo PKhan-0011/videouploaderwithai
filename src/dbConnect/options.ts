@@ -59,6 +59,8 @@ export const authOptions: NextAuthOptions = {
             }
           }),
           // yha hamm de sakte hai apna google and github etc etc.. credentails..
+
+          
     ],
 
     callbacks:{

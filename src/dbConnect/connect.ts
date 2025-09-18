@@ -35,3 +35,6 @@ export async function dbConnect(): Promise<void>{
 
 // yha p ek jo hai conncetion uske kuch error hai isko dekho sahi s and 
 // ek jo hitehsh sir n alag tarikhe s bataya hai usko karo sahi s okkh!..;
+
+
+// ye jo bhi hoga like extra functionality while connection extra code Bases this are only in nextjs okkh!...
