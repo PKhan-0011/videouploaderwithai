@@ -4,27 +4,33 @@
 import mongoose from 'mongoose';
 
 export interface ConnectionObject {
-    isConnected?: number,
+      isConnected?: number,
 }
 
-const connection:ConnectionObject = {};
+export const Connection : ConnectionObject = {};
 
-export async function dbConnect() {
-    try{
-         if(connection.isConnected){
-            console.log("already connected hai")
-            return
-         }
-         else{
-          const data =  await mongoose.connect(process.env.MONGO_URL!);
-          connection.isConnected = data.connections[0].readyState;
-         console.log(data, "User connected successfully!");
-         }
-    }
-    catch(e){
-        const err = e as Error
-        console.log(err, "Catch m error part aa gya hai not bad!..")
-    }
+export async function dbConnect(): Promise<void>{
+       // to mughe first check karna hai like ki ye connected hai ya nahi okkh!..
+
+       if(Connection.isConnected){
+           // in case ye true hota hai okkh!
+           console.log(Connection.isConnected); // Yha p 1 ayega okkh that mean's already connected hai okkh!..;
+           console.log('db already connected');
+       }
+
+       // in case connect nahi hua okkh!.. to connect karo okkh!...
+        try{
+              const db = await mongoose.connect(process.env.MONGO_URL!);
+              Connection.isConnected = db.Connection[0].readyState;
+
+              // and abb Yha s Connection.isConnected = 1 aa jayegi okh that mean's ye connect ho gya hai okkh!..
+              console.log(Connection.isConnected , 'connect to mongodb');
+        }
+
+        catch(e){
+             const error = e as Error;
+             console.log(error);
+        }
 }
 
 // yha p ek jo hai conncetion uske kuch error hai isko dekho sahi s and 
