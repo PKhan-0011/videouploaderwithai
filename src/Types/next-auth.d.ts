@@ -1,17 +1,22 @@
-import NextAuth, {DefaultSession} from "next-auth";
+import  { DefaultSession } from "next-auth"
 
 declare module "next-auth" {
- 
+  
   interface Session {
     user: {
-      address: string  // yha p tera like address jo hai tera wo id bhi bna k use kiya hua hai hitesh sie n okkh!..
 
-    } & DefaultSession["users"],
+      id: string
+
+    } & DefaultSession["user"]
   }
 }
 
-console.log(NextAuth);
 
+//Pehle NextAuth ka session bolta tha: “mere paas sirf name/email/image hai”.
+//Tumne bola: “nahi bhai, mere session me id bhi hamesha hoga”.
+//Ab TypeScript maan gaya aur tumhe error nahi deta.
+
+// session.user ke andar kabhi bhi id nahi hota that's why hamm ye extra id put karte hai taki use kar sake okkh!.. ye value above wala dete hai..
 
 // kabhi bhi in case mugghe next-auth banana padega to mai next-auth.d.ts ka use jarror karunga bcz ye mughe 
 // type safety deta hai okkh!..
