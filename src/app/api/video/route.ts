@@ -1,55 +1,87 @@
 import { dbConnect } from "@/dbConnect/connect";
-import videoModel from '@/Model/Video';
-import { NextResponse } from "next/server";
+import {videoModel} from '@/Model/Video';
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/dbConnect/options";
+import { authOptions } from "../[...nextauth]/options";
+import {Video} from '@/Model/Video';
+import {NextRequest, NextResponse} from 'next/server';
+
+
+// get request ayega yha p that means sara data chiaye mughe yha p okkh!...
 
 export async function GET(){
-     // iss method m actally hota ye hai like ki hamm sara data le lete hai from dataBase..;
-     try{
-          await dbConnect();
-          const videos = await videoModel.find({}).sort({created: -1}).lean(); // iska generally matlb hota hai ki videos sari lelo without filter in desecding order okkh!>>>;
-           
-          // .lean() s hamm data ko  "Document ko plain JavaScript object me laa, Mongoose ke heavy features na lagan ye karta hai.. normal object m hi rakhta hai aur .save() and .populate() nahi kar sakte okkh!..;
+    await dbConnect();
 
-          if(!videos || videos.length === 0){
-              return NextResponse.json(
-                [], {status: 500}
-              )
-          }
-          return NextResponse.json(videos); // sari video backend p dikhegi 
-     }
-     catch(e){
-        const err = e as Error;
+    try{
+           const videos = await videoModel.findOne({}).sort({created: -1}).lean()
+
+           if(videos.length === 0 || !videos){
+                NextResponse.json({message: 'video not there!..', success: false})
+           }
+
+           // agar length mik gya videos ka to return kar do okkh!..
+
+           return NextResponse.json({
+               videos,
+               success: true,
+           }, {status: 201});
+
+
+    }
+    catch(error){
+        const err = error as Error;
         console.log(err);
-        return NextResponse.json(
-            {error: "Failed to fetch videos"},
-            {status: 500}
-        );
-     }
+
+        return NextResponse.json({
+            message: 'error hai kuch yha p okkh!..',
+            success: false,
+        }, {status: 500});
+    }
 }
 
 // abb yha s POST request ayegi jha p actully mai sara data nahi bhejna chata kisi authtentication p lagana cahta hu okkh!..;
 
-export async function POST(){
+export async function POST(request: NextRequest){
     try{
          // getServer sesion s session launga okkh!..;
-         const session = await getServerSession(authOptions);
+         // iska generally matlb ye hoga like ki agar user login hai to hi videos de upload kar paye okh!..;
+
+         const session = getServerSession(authOptions);
 
          if(!session){
-            return NextResponse.json({
-                error: 'Unauthorize',
-                success: false,
-            }, {status: 500})
+            // agar session m kuch galatiya hai like login hi nahi hua kuch authorize wala hi nahi hai kuch to galtiya hai isme kuch okkh!..
+            console.log('login hi nahi hai okkh!..');
+
+            NextResponse.json({message: 'Pls login'});
          }
+
+         // yha p session true hai means login hai okkh!..
 
          await dbConnect();
 
-         // agar session thik hua to mere pass alrday ek video ka dataBase hai wha s sara data le lenge okkh!..;
+         const body: Video = await request.json();
 
-          
+         if(!body.title || !body.description || !body.videoUrl || !body.thumbnailUrl){
+               return NextResponse.json({
+                  message: 'in above m s kuch chize aa nahi paa rahi hai okkh!..',
+                  success: false
+               }, {status: 500});
+         }
+
+            
+         const videoData = {
+             ...body, // iska matlb ye hai ki rest jo data hai above wala wo aa jayega okkh!..
+             controls: body?.controls ?? true,
+             transformation: {
+                height: 1080,
+                width: 1080,
+                quality: body.transformation?.quality ?? 100,
+             }
+         }
          
-           
+         const newVideo = await videoModel.create(videoData);
+
+         return NextResponse.json(newVideo); // yha s video uplaod hogi okkh!..
+
     }
     catch(e){
        const err = e as Error;
