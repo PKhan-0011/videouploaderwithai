@@ -14,8 +14,12 @@ export async function GET(){
     try{
            const videos = await videoModel.findOne({}).sort({created: -1}).lean()
 
-           if(videos.length === 0 || !videos){
-                NextResponse.json({message: 'video not there!..', success: false})
+           if(!videos){
+               console.log('koi video data hai hi nahi okkh!...');
+               return NextResponse.json({
+                 message: 'video are not there any!...',
+                 success: false,
+               }, {status: 500});
            }
 
            // agar length mik gya videos ka to return kar do okkh!..
@@ -58,7 +62,7 @@ export async function POST(request: NextRequest){
 
          await dbConnect();
 
-         const body: Video = await request.json();
+         const body: Video = await request.json(); // ye frontend s sara data aa rha hoga okkh!..
 
          if(!body.title || !body.description || !body.videoUrl || !body.thumbnailUrl){
                return NextResponse.json({
@@ -81,7 +85,7 @@ export async function POST(request: NextRequest){
          const newVideo = await videoModel.create(videoData);
 
          return NextResponse.json(newVideo); // yha s video uplaod hogi okkh!..
-
+        
     }
     catch(e){
        const err = e as Error;
