@@ -7,115 +7,75 @@ import {
     ImageKitUploadNetworkError,
     upload,
 } from "@imagekit/next";
+import { Span } from "next/dist/trace";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
+interface fileUPload {
 
-interface FileUploadProps {
-    onSuccess: (res:any) => void
-    onProgress?: (progress: number) => void
-    fileType?: "image" | "video"
+    onProgress: () => void;
+    onSuccess?: () => void;
+    fileType?: "video" | "image";
+
 }
 
-const FileUpload = ({
-    onSuccess,
+// UploadExample component demonstrates file uploading using ImageKit's Next.js SDK.
+const UploadExample = ({
     onProgress,
+    onSuccess,
     fileType
-}: FileUploadProps) => {
-   
-    const [uploading, setUploading] = useState(false);
-    const [error, setError] = useState<string | null>('');
-
-    console.log(error);
-
+}: fileUPload) => {
     
-        // ye optional hai but khud s ki gayi validation hai okkh!..;
-     const fileValidation = (file: File) => {
+    const [uploading, setUploading] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
-           if(fileType === 'video'){
-              if(!fileType.startsWith('/api/video/mp4')){
-                 setError("pls upload a valid file")
-              }
-           }
-           if(file.size > 100* 1024 * 1024){
-              setError('file Size must be less than 100 mb')
-           }
 
-           return true // iska matlb sabb thik hai..
-     }
-
-     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault(); // isse generally higa ye like ki yha s extra chize nahi jayegi backend p okkh!..;
-        const file = e.target.files?.[0]
-        
-        // yha p mere pass actaully files ka bhandar hai okkh!..; jisme har ek elment chiaye mughe;
-
-        if(!file || !fileValidation(file)){
-            return 
-            setUploading(true);
-            setError(null);
-        }
-
-        try{
-                const authRes = await fetch('/api/imageKitUplaod-auth'); // ye to json m ayega actauuly but mughe isko strings m dalna hai okkh!..;
-                const data = await authRes.json(); // ye strings m convert ho gyaa hai..
-                 
-                 const res = await upload({
-                expire: data.expire,
-                token: data.token,
-                signature: data.signature,
-                publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY!,
-                file, // bcz ye file upar s aya hai okkh!... backend s nahi.. clear
-                fileName: file.name, 
-                
-                // Optionally set a custom file name
-                // Progress callback to update upload progress state
-                onProgress: (event) => {
-                    if(event.lengthComputable && onProgress){
-                        const percentage = (event.loaded / event.total) * 100;
-
-                        onProgress(Math.round(percentage));
-                    }
-                },
-              
-            });
-              console.log(res);
-              onSuccess(res)
-        }
-
-        catch(error){
-           if (error instanceof ImageKitAbortError) {
-                console.error("Upload aborted:", error.reason);
-            } else if (error instanceof ImageKitInvalidRequestError) {
-                console.error("Invalid request:", error.message);
-            } else if (error instanceof ImageKitUploadNetworkError) {
-                console.error("Network error:", error.message);
-            } else if (error instanceof ImageKitServerError) {
-                console.error("Server error:", error.message);
-            } else {
-                // Handle any other errors that may occur.
-                console.error("Upload error:", error);
+      // fist valodation ata hai like validateFile wala okkh!..
+      // optional validation..
+       
+      const validationFile = (file: File) => {
+            if(fileType === 'video'){
+                if(!file.type.startsWith("video/")){
+                    setError('file uplaoding m kuch gdbd hai okkH!..')
+                }
             }
 
-        }finally{
-            setUploading(false); // iski isliye need thi bcz hamne isko try and catch m false nhai mark kiya after calling..;
-        }
+            // iske baad file ki length check kar lenge okkh!..
 
-     };
-    
+            if(file.size > 100*1024*1024){
+                setError('file size must be less than 100 mb');
+            }
+
+             return true
+      }
+       
+     
+      const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+           
+      }
+         
+
+         
+
     return (
         <>
            
-            <input type="file" 
-              accept={fileType === 'video' ? "video/*" : "image/*"}
-              onChange={handleFileChange}
+            <input type="file"  
+             accept = {fileType === 'video' ? 'video/*' : "images/*"}
+             onChange = {handleFileChange}
+
             />
-             {uploading && <span>Loading....</span>}
+            
+            {uploading && (
+                 <span>Loading...</span>
+            )}
+           
+           
         </>
     );
 };
 
-export default FileUpload;
+export default UploadExample;
 
 // step's to define how to code such kind of code bases!...
 
@@ -123,5 +83,22 @@ export default FileUpload;
 // ki file hai bhi thik ya nahi and fileValidation bhi in case glt hua to show error.. and then api call hogi backend p
 // wha s data lenge hamm sara ka sara and usko json m convert karenge bcz fetch hame strings m deti hai chize okkh..
 // uske badd sara data hamm uplaod method wale m daal denge okkh!...and wha shamm onProcess and sucess bhi fill kar denge..
+
+
+//     catch (error) {
+//             // Handle specific error types provided by the ImageKit SDK.
+//             if (error instanceof ImageKitAbortError) {
+//                 console.error("Upload aborted:", error.reason);
+//             } else if (error instanceof ImageKitInvalidRequestError) {
+//                 console.error("Invalid request:", error.message);
+//             } else if (error instanceof ImageKitUploadNetworkError) {
+//                 console.error("Network error:", error.message);
+//             } else if (error instanceof ImageKitServerError) {
+//                 console.error("Server error:", error.message);
+//             } else {
+//                 // Handle any other errors that may occur.
+//                 console.error("Upload error:", error);
+//             }
+//        }
 
 
