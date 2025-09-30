@@ -4,9 +4,7 @@ declare module "next-auth" {
   
   interface Session {
     user: {
-
-      id: string
-
+      id: string,
     } & DefaultSession["user"]
   }
 }
@@ -22,7 +20,6 @@ declare module "next-auth" {
 // type safety deta hai okkh!..
 
 
-
 // declare module likhna isliye zaruri hai taki TypeScript
 //  ko yeh pata chale ki hum apne session me default fields 
 // ke alawa aur bhi custom data daal rahe hain.
@@ -30,3 +27,13 @@ declare module "next-auth" {
 
 // and ek aur matlb hota hai jaise in case mughe data kuch extra chaiye in session jiska dataType nahi pta to ye 
 // hame bina error k use k use karne deta hai okkh!...
+
+
+// &DefaultSession["user"] isko generally hamm user k object k baad lagate hai iska matlb ye hoga like ki
+// user k andar jo pehle s elements the wo rahenge replace nahi honge and ye value extra add ho jayegi okkh!...
+
+
+// Use & DefaultSession["user"]
+// Agar tu & DefaultSession["user"] likhega, iska matlab hai:
+// Pehle se jo default user fields the (name, email, image), wo bache rahenge.
+// Tumhare naye fields (id, role, address, etc.) bhi add ho jayenge.

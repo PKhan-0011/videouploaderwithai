@@ -47,6 +47,5 @@ export const videoModel = (mongoose.models.videos as mongoose.Model<Video>) || (
 // default: Video_Dimension.height},
 // width: {type: Number, default: Video_Dimension.width
 
-
 // for pasword hashing before gong further...
 

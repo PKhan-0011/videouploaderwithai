@@ -5,6 +5,8 @@ import userModel from "@/Model/user";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from 'bcrypt';
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -22,7 +24,7 @@ export const authOptions: NextAuthOptions = {
                   // crednetials ka use hamm isliye karte hai bcz isse hamm ye restrict kar dete hai like ki user jab bhi login karega to use 
                   // hamm email and password s hi kare okkh!... and yahi email and password hona chaiye okkh!..
 
-                   async authorize(credentials) {
+                   async authorize(credentials : any): Promise<any> {
 
                         // isme generally hota ye hai like ki jab bhi user login karega to sara data like jo bhi credentials m the 
                         // wo isme aa jayega and check karega like ki daatBase m exist karta hai bhi ya nahi okkh!...
@@ -61,8 +63,8 @@ export const authOptions: NextAuthOptions = {
                             return {
 
                                   Id: user._id as string, 
-                                  email: user.email
-
+                                  email: user.email as string,
+                                  password: user.password as string
                             }
 
                             // yha s jo bhi return hoga wo hi mai lunga like useSession m and session m okkh!...get serversession m bhi whai ayega 
@@ -82,6 +84,17 @@ export const authOptions: NextAuthOptions = {
                    }
 
            }),
+
+           GitHubProvider({
+             clientId: process.env.GITHUB_ID!,
+             clientSecret: process.env.GITHUB_SECRET!
+          }),
+           
+          GoogleProvider({
+           clientId: process.env.GOOGLE_CLIENT_ID!,
+           clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+         })
+
     ],
          
     // bass ye dhyan rakhio like ki callbacks ka hamm isliye use karte hai like session hame bydefault 
@@ -144,7 +157,6 @@ export const authOptions: NextAuthOptions = {
           
     },
     
-
 
     session:{
         strategy: 'jwt',
