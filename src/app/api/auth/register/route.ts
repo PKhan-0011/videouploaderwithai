@@ -4,6 +4,7 @@ import userModel from '@/Model/user';
 import bcrypt from 'bcrypt';
 
 export async function POST(request: NextRequest){
+
      try{
           
      const {email, password}= await request.json(); // ye jo data hai wo sara frontend s ayega okkh!..;
@@ -24,18 +25,16 @@ export async function POST(request: NextRequest){
       });
         
       if(existingEmail){
-         // to iska generally matlb ye hai ki email exist karta hai database m and passwod bhi check karlo
-         // agar password bhi hua to error send kardo okkh!..;
-         const hashedPassword = await bcrypt.compare(password, existingEmail.password); // yha p galati ho jati hai pehle plain password ayega okkh!.,
+          // iska matlb ye hia ki email exist karta hai okkh!..
+          const passordChecking = await bcrypt.compare(password, existingEmail.password);
 
-         // to isse check ho jayega ki password exist karta hai bhi ya nahi okkh!...;
-         if(hashedPassword){
-             // iska matlb ye hai ki password bhi match kar gya hai 
-             return NextResponse.json({
-               message: "password match ho gya hai and email bhi match ho gay hai!...",
-               success: false,
-             }, {status: 500});
-         }
+          if(passordChecking){
+            // iska matlb ye hai ki password bhi hai and email bhi exist karta hai okkh!..
+            return NextResponse.json({
+              message: 'data already exist!..',
+              success: false,
+            }, {status: 500});
+          }
       }
 
         // agar email hi exist nahi karta to mughe user aya hi first time hai okkh!...
@@ -50,9 +49,12 @@ export async function POST(request: NextRequest){
 
         // ye note karne wali bat like ki hamne yha p koi hash ka logic nahi lagaya hai bcz
         // userModel p jo hamne logic likha hai wo userSchema.pre usme hi hash ho jayega ye...
-
+       
+        return NextResponse.json({
+          message: result, 
+          success: true,
+        }, {status: 500});
         
-      
      }
      catch(err){
           console.error("error in catch part", err);
@@ -64,5 +66,7 @@ export async function POST(request: NextRequest){
 }
 
 
+// Yha p bhi jo data ayega like email and pasword from frontend and login hoga uske according 
+// to mai data frotend p iska bhi dikha sakta hu from useSession() okkh!..
 
 
