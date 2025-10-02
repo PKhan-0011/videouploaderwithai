@@ -8,8 +8,6 @@ type FetchOptions = {
     headers?: Record<string, string> 
 }
 
-
-
 class ApiClient{
     private async fetch<T>(
         endPoint: string,

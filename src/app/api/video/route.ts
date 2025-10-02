@@ -1,6 +1,6 @@
 import { dbConnect } from "@/dbConnect/connect";
 import {videoModel} from '@/Model/Video';
-import { getServerSession } from "next-auth";
+import  { getServerSession } from "next-auth";
 import { authOptions } from "../[...nextauth]/options";
 import {Video} from '@/Model/Video';
 import {NextRequest, NextResponse} from 'next/server';
@@ -42,7 +42,9 @@ export async function GET(){
     }
 }
 
-// abb yha s POST request ayegi jha p actully mai sara data nahi bhejna chata kisi authtentication p lagana cahta hu okkh!..;
+
+
+//abb yha s POST request ayegi jha p actully mai sara data nahi bhejna chata kisi authtentication p lagana cahta hu okkh!..;
 
 export async function POST(request: NextRequest){
     try{
@@ -71,7 +73,6 @@ export async function POST(request: NextRequest){
                }, {status: 500});
          }
 
-            
          const videoData = {
              ...body, // iska matlb ye hai ki rest jo data hai above wala wo aa jayega okkh!..
              controls: body?.controls ?? true,
@@ -91,8 +92,9 @@ export async function POST(request: NextRequest){
        const err = e as Error;
        console.log(err);
        return NextResponse.json({
-           message: "yha p error aya hai from dbConnect..!;",
+           message: "yha p error aya hai from dbConnect..!",
            success: false,
        }, {status: 500});
     }
 }
+// Yha p do chize ayengi like GET:- and POST:- to get wala jo hai wo like GET: - get all video and POST:- create new Video okkh!.. 

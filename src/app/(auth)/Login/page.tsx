@@ -2,6 +2,7 @@
 import React from 'react'
 import { useState } from 'react';
 import {useRouter} from 'next/navigation';
+import {useSession} from 'next-auth/react';
 
 import {signIn} from 'next-auth/react';
 
@@ -10,6 +11,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const router = useRouter();
+   
+  const {data: session} = useSession();
+
+  console.log(session);
+
+  // ye bhi dhyan rakhio like ki ye password return nahi karta okkh! bcz of safety reason...
+  // Yha p mughe sirf id email milega okkh! 
+
 
   const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault(); // isse backend p data nahi jayega unneccessry okkh..!
@@ -85,3 +94,5 @@ export default LoginPage
 // dekh bhai tu ye soch rha tha yha p ki yha backend s ayega data ya jayega to answer hai jayega okkh!...
 // aur uke badd hamm form wale component m hamm dataBase use nahi karenge bcz ye alrady use hua pda hai 
 // in next-auth providers m hamne authorization wala conecpt lagega okkkh!...
+
+

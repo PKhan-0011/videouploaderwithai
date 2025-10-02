@@ -11,17 +11,22 @@ export async function GET() {
       
     try{
          
-        const session = await getServerSession(authOptions);
+        const session = await getServerSession(authOptions); // for checking like login hai ya nahi okkh!...
+         
+        console.log(session);
+
+        // Yha p data jo ayega session ka wo like jo credentails s ayega wahi hai okkh!..
 
         if(!session){
             // iska matlb ye hai ki data aya hi nahi hai okkh!..
-            console.log('session me kuch gdbd hai okkh!');
+            console.log('Login nahi hai');
 
             return NextResponse.json({
-                 message: 'session me glti hai kuch okh!.',
+                 message: 'Login nahi hai okkh!...',
                  success: false,
             }, {status: 500});
         }
+           
 
          const { token, expire, signature } = getUploadAuthParams({
 
@@ -53,4 +58,3 @@ export async function GET() {
 
 // yha s hamara token,expire,signature,and public key gayi hai dhyan s okkh!..;
 // mughe yha p token expiry and signature milta hai and isko hamm frontend s excess kar sakte hai...
-

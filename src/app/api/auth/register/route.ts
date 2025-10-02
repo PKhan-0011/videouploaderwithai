@@ -53,7 +53,7 @@ export async function POST(request: NextRequest){
         return NextResponse.json({
           message: result, 
           success: true,
-        }, {status: 500});
+        }, {status: 200}); // ye frontend p jayega okkh!...
         
      }
      catch(err){
