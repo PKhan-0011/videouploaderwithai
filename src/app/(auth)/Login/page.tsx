@@ -81,8 +81,9 @@ const LoginPage = () => {
             
           <p> If you not login by your credentials pls signUp first  <a href="/register">SignUp</a></p>
 
-        <div>
+        <div className=''>
             <button onClick={() => signIn("github")}>Login with Github</button> 
+            <button onClick={() => signIn("google")}>Login with Email</button>
         </div>
     </div>
   )

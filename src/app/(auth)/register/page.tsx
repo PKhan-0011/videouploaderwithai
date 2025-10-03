@@ -59,7 +59,7 @@ const RegisterPage = () => {
 
   return (
     <div>
-         <form onSubmit={handelSubmit}>
+         <form onSubmit={(e) => handelSubmit(e)}>
             
             <input type="text" 
               placeholder='email'
@@ -81,7 +81,7 @@ const RegisterPage = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
-            <button type='submit'>Submit</button>
+            <button type='submit'>Submit</button> {/* Yha p logic like ye hia ki type Submit hai to wo onSubmit apne app call ho jayegi okkh!.. but agar button dega to type m to function call karna padega onClick = { ()=> handleSubmit()} wala.*/}
          </form>
 
          <p>if You have already account pls <a href='/Login'>Login</a></p>
@@ -89,12 +89,11 @@ const RegisterPage = () => {
   )
 }
 
+
 export default RegisterPage;
 
 
-
 // ye tera sign-Up hai okkh..
-
 
 // dekh yha p jo logic maine lagaya hai like ki ek paraGraph m login ka to 
 // generally uska matlb ye hai ki agar user k pass already login ka materials hai to wo 
