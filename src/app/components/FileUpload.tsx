@@ -51,7 +51,7 @@ const UploadExample = ({
        
      
       const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-           
+              
       }
          
 
@@ -100,5 +100,8 @@ export default UploadExample;
 //                 console.error("Upload error:", error);
 //             }
 //        }
+
+
+ // This component must be a client component
 
 

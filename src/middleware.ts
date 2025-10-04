@@ -1,30 +1,34 @@
-import { withAuth } from "next-auth/middleware";
-import { NextResponse} from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import {NextResponse, NextRequest} from 'next/server';
 
-export default withAuth(
-  // `withAuth` augments your `Request` with the user's token.
-  function middleware() {
+export async  function middleware(request: NextRequest){
+      
+     // sabse phele mai ye lunga like ki getToken login hai ya nahi checking lagunag okkh!..
+
+     const token = await getToken({req: request});
+
+     const pathname = request.nextUrl.pathname;
+
+     if(pathname.startsWith('/register') || pathname.startsWith('/Login') || pathname.startsWith('/api/auth')){
+            return NextResponse.next();
+     }
+
+     if(!token || pathname.startsWith('/dashboard')){
+            return NextResponse.redirect(new URL('/Login', request.url))
+     }
+
+     if(token && (pathname.startsWith('/register') || pathname.startsWith('/Login'))){
+            return NextResponse.redirect(new URL('/home', request.url));
+     }
+     
      return NextResponse.next();
-  },
-  {
-    callbacks: {
+}
 
-      authorized({ token, req }) {
+export const config = {
+      matcher: ['/((?!api|_next|static|favicon.ico).*)']
+} 
 
-           const {pathname} = req.nextUrl; 
-           
-           if(pathname.startsWith('/api/auth') || pathname === '/Login' || pathname === '/register' || pathname === '/api/auth/videos')
-            return true
 
-           return !!token
-      }
-    },
-  },
-)
-
-export const config = { matcher: ['/((?!api|_next|static|favicon.ico).*)'], };
-
-// isme hai yrr kuch galatiya okkh dhyan s kario isko..;
 
 
 
