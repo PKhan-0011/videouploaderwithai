@@ -10,17 +10,6 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-export function useNotification(){
-    const context = useContext(NotificationContext);
-
-    if(context === undefined){
-        throw new Error(
-            "useNotification must be used within a NotificationProvider"
-        )
-    }
-
-    return context;
-}
 
 
 export const Notification = ({children}: {children: ReactNode}) => {
@@ -69,4 +58,21 @@ export const Notification = ({children}: {children: ReactNode}) => {
   )
 }
 
+
+export function useNotification(){
+    const context = useContext(NotificationContext);
+
+    if(context === undefined){
+        throw new Error(
+            "useNotification must be used within a NotificationProvider"
+        )
+    }
+
+    return context;
+}
+
 export default Notification
+
+
+// Muge actaully kuch data send karna hai kahi p okkh!..
+// like app se profile m send karna hai okh!, app -> navBar -> Profile. 
