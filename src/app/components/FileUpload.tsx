@@ -119,23 +119,6 @@ export default UploadExample;
 // uske badd sara data hamm uplaod method wale m daal denge okkh!...and wha shamm onProcess and sucess bhi fill kar denge..
 
 
-//     catch (error) {
-//             // Handle specific error types provided by the ImageKit SDK.
-//             if (error instanceof ImageKitAbortError) {
-//                 console.error("Upload aborted:", error.reason);
-//             } else if (error instanceof ImageKitInvalidRequestError) {
-//                 console.error("Invalid request:", error.message);
-//             } else if (error instanceof ImageKitUploadNetworkError) {
-//                 console.error("Network error:", error.message);
-//             } else if (error instanceof ImageKitServerError) {
-//                 console.error("Server error:", error.message);
-//             } else {
-//                 // Handle any other errors that may occur.
-//                 console.error("Upload error:", error);
-//             }
-//        }
 
-
- // This component must be a client component
 
 

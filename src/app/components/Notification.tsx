@@ -71,7 +71,7 @@ export function useNotification(){
     return context;
 }
 
-export default Notification
+export default Notification;
 
 
 // Muge actaully kuch data send karna hai kahi p okkh!..

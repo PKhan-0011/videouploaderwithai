@@ -10,8 +10,7 @@ export interface Iuser extends Document {
        VerificationCode: string, // isse otp type ka ek chiz hamm mail p send karenge okkh!..
        
        // Payment wala method lagega yha p okkh!..
-       idPaid: boolean,
-       subscriptionPlan: "FREE"| "BASIC" | "PRO",
+      
 
        createdAt?: Date,
        updatedAt?: Date,
@@ -25,13 +24,8 @@ const userSchema = new Schema({
     email: {type: String, required: true, unique: true},
     confirmPassword: {type: String, required: true},
 
-    VerificationCode: {type: String, required: true},
-    
-    // payment auth wali bat chit yha p okkh!..
-    isPaid: {type: Boolean, default: false},
-    subscriptionPlan: {type: String, enum: ["FREE", "BASIC", "PRO"]},
+    VerificationCode: {type: String, required: true},  
      
-
     createdAt: {type: Date, required: true},
     updatedAt: {type: Date, required: true},
 });

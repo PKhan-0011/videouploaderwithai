@@ -5,7 +5,7 @@ export const Video_Dimension = {
     width: 1080
 }
 
-export interface Video extends Document{
+export interface IVideo extends Document{
     id: mongoose.Types.ObjectId,
     title: string,
     description: string,
@@ -19,10 +19,10 @@ export interface Video extends Document{
     },
 
     // agar koi video hai usme hamm yahi dekhte hai ki wo ksi type ka hai okkh!..
-    isPremium: boolean
+    
 }
 
-const videoSchema: Schema<Video> = new Schema({
+const videoSchema: Schema<IVideo> = new Schema({
      id: {type: 'ObjectId', required: true},
      title: {type: String, required: true },
      description: {type: String, required: true},
@@ -34,7 +34,6 @@ const videoSchema: Schema<Video> = new Schema({
         width: {type: Number,  default: Video_Dimension.width},
         quality: {type: Number, min: 1, max: 100}
      },
-     isPremium: {type: Boolean, default: false},
 })
 
 
@@ -42,7 +41,7 @@ const videoSchema: Schema<Video> = new Schema({
 // yha koi password ya kuch alg sa nahi h hash karne k liye okkh!..;
 
 
-export const videoModel = (mongoose.models.videos as mongoose.Model<Video>) || (mongoose.model<Video>('videos', videoSchema))
+export const videoModel = (mongoose.models.videos as mongoose.Model<IVideo>) || (mongoose.model<IVideo>('videos', videoSchema))
 
 // default: Video_Dimension.height},
 // width: {type: Number, default: Video_Dimension.width
