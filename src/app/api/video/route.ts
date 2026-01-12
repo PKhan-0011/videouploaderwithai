@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../[...nextauth]/options";
 // import {Video} from '@/Model/Video';
 import { NextRequest, NextResponse } from "next/server";
+import { IVideo } from "@/Model/Video";
 
 // get request ayega yha p that means sara data chiaye mughe yha p okkh!...
 
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
-    const body: Video = await request.json(); // ye frontend s sara data aa rha hoga okkh!..
+    const body: IVideo = await request.json(); // ye frontend s sara data aa rha hoga okkh!..
 
     if (
       !body.title ||
