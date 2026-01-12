@@ -1,7 +1,21 @@
+import Navbar from "./components2/Navbar";
+import Footer from "./components2/Footer";
+import HeroSection from "./components2/FeatureSection";
+import FeaturesSection from "./components2/FeatureSection";
+import HowItWorksSection from "./components2/HowItWorksSection";
+import CTASection from "./components2/ctaSection";
+
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <h2>Kya haal hai mittr!..;</h2>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main>
+        <HeroSection />
+        <FeaturesSection />
+        <HowItWorksSection />
+        <CTASection />
+      </main>
+      <Footer />
     </div>
   );
 }
