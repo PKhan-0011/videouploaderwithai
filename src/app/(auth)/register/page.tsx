@@ -1,109 +1,111 @@
-'use client'
-import React from 'react'
-import {useState} from 'react';
-import {useRouter} from 'next/navigation';
+"use client";
+import React from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-   const router = useRouter();
+  const router = useRouter();
 
-   // iske badd ek chiz ati hai like  handleSubmit ki ye ye submit foam handle karega okkh!...
+  // iske badd ek chiz ati hai like  handleSubmit ki ye ye submit foam handle karega okkh!...
 
-   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-               // foam wala data kabhi bhi handle karnege to hame e.prevent default ka use hamse karna hai okkh!...
-               e.preventDefault();
-               
-               if(password != confirmPassword){
-                   console.log("Password m kuch error hai isko dekhi sahi s okkh!..");
-                   throw new Error('password are not same as confirm password!')
-               }
+  const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // foam wala data kabhi bhi handle karnege to hame e.prevent default ka use hamse karna hai okkh!...
+    e.preventDefault();
 
-               try{
-                      // yha s ham data send karenge ge backend p okk!...
-                      const res = await axios.post('api/auth/register', {
-                          email,
-                          password,
-                          confirmPassword
-                      });
+    if (password != confirmPassword) {
+      console.log("Password m kuch error hai isko dekhi sahi s okkh!..");
+      throw new Error("password are not same as confirm password!");
+    }
 
-                      // hame ye jo hai string m hi bhejne hote hai ye dhyan rakhna hota hai..
-                      // but your kind information hamm in case axios ka use karte hai to strings and json ka 
-                      // use nahi karte okkh!.. wo apne app hi handle kar leta hai.. okkh!...
+    try {
+      // yha s ham data send karenge ge backend p okk!...
+      const res = await axios.post("api/auth/register", {
+        email,
+        password,
+        confirmPassword,
+      });
 
-                      console.log(res);
+      // hame ye jo hai string m hi bhejne hote hai ye dhyan rakhna hota hai..
+      // but your kind information hamm in case axios ka use karte hai to strings and json ka
+      // use nahi karte okkh!.. wo apne app hi handle kar leta hai.. okkh!...
 
-                      if(res.status == 200 && res.status <= 300){
-                          // tab to thik hai smjh lo like ki data jo hai uska status 200 and between 300 hai to 
-                          // server sahi chalega okkh!..
-                          console.log('server in the range of 200-300 abb sahi chalega..');
-                          router.push('/Login');
-                      }
-                      else{
-                          // yha agar ayega to smjh lena thik nahi hai like kuch gdbd kar di hamne okkh!...
-                          throw new Error("hamara status more than 200-300 k bich aa rha hai okkh!")
-                      }
-               }
+      console.log(res);
 
-               catch(e){
-                        const err = e as Error;
-                        console.log(err);
-                        throw new Error(
-                          " Error in the catch part okkh!..."
-                        )
+      if (res.status == 200 && res.status <= 300) {
+        // tab to thik hai smjh lo like ki data jo hai uska status 200 and between 300 hai to
+        // server sahi chalega okkh!..
+        console.log("server in the range of 200-300 abb sahi chalega..");
+        router.push("/Login");
+      } else {
+        // yha agar ayega to smjh lena thik nahi hai like kuch gdbd kar di hamne okkh!...
+        throw new Error(
+          "hamara status more than 200-300 k bich aa rha hai okkh!"
+        );
+      }
 
-               }
-   }
+      // dekh bass itna dhyan rkhna hota hai like ki jab bhi api call hogi to respone mai bhut sari chize
+      // ayngei okkh!...
+      // res = {
+      //   data: {}, // 👈 MAIN CHEEZ (API ka actual response)
+      //   status: 200,
+      //   statusText: "OK",
+      //   headers: {},
+      //   config: {},
+      // };
+    } catch (e) {
+      const err = e as Error;
+      console.log(err);
+      throw new Error(" Error in the catch part okkh!...");
+    }
+  };
 
   return (
     <div>
-         <form onSubmit={(e) => handelSubmit(e)}>
-            
-            <input type="text" 
-              placeholder='email'
-              value = {email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+      <form onSubmit={(e) => handelSubmit(e)}>
+        <input
+          type="text"
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="confirmPassword"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <button type="submit">Submit</button>{" "}
+        {/* Yha p logic like ye hia ki type Submit hai to wo onSubmit apne app call ho jayegi okkh!.. but agar button dega to type m to function call karna padega onClick = { ()=> handleSubmit()} wala.*/}
+      </form>
 
-
-             <input type="text" 
-              placeholder='password'
-              value = {password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-
-             <input type="text" 
-              placeholder='confirmPassword'
-              value = {confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-
-            <button type='submit'>Submit</button> {/* Yha p logic like ye hia ki type Submit hai to wo onSubmit apne app call ho jayegi okkh!.. but agar button dega to type m to function call karna padega onClick = { ()=> handleSubmit()} wala.*/}
-         </form>
-
-         <p>if You have already account pls <a href='/Login'>Login</a></p>
+      <p>
+        if You have already account pls <a href="/Login">Login</a>
+      </p>
     </div>
-  )
-}
-
+  );
+};
 
 export default RegisterPage;
 
-
 // ye tera sign-Up hai okkh..
 
-// dekh yha p jo logic maine lagaya hai like ki ek paraGraph m login ka to 
-// generally uska matlb ye hai ki agar user k pass already login ka materials hai to wo 
+// dekh yha p jo logic maine lagaya hai like ki ek paraGraph m login ka to
+// generally uska matlb ye hai ki agar user k pass already login ka materials hai to wo
 // login page p ja sakta hai okh!.. directly
 
-// but button p bhi hamne logic lagaya tha like ki in case jab bhi button p click karunga to router 
+// but button p bhi hamne logic lagaya tha like ki in case jab bhi button p click karunga to router
 // use push kar dega okkkh!.. on /route p..
 
 // https://github.com/PKhan-0011/videouploaderwithai.git
 
 // Yha p ek bar react hook form ka bhi use karke dekh liyo okkh!..
-
-
